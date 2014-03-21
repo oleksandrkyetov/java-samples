@@ -1,13 +1,15 @@
-package java.serialization.service.impl;
+package serial.service.impl;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import serial.service.ISerializationService;
 
 import java.io.*;
-import java.serialization.service.SerializationService;
 
-public class SerializationServiceImpl implements SerializationService {
+@Service
+public class SerializationServiceImpl implements ISerializationService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SerializationServiceImpl.class);
 
@@ -22,7 +24,7 @@ public class SerializationServiceImpl implements SerializationService {
 
 			string = Base64.encode(byteArrayOutputStream.toByteArray());
 		} catch (IOException ioe) {
-			LOGGER.error("", ioe);
+			LOGGER.error("Object serialization exception ...", ioe);
 		}
 
 		return string;
@@ -30,15 +32,17 @@ public class SerializationServiceImpl implements SerializationService {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T extends Serializable> T stringToObject(final String string, final Class<T> clazz) {
+	public <T extends Serializable> T stringToObject(final String string, final Class<T> clazz) throws InvalidClassException {
 		T object = null;
 
 		try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.decode(string));
 			ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream)) {
 
 			object = (T) objectInputStream.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			LOGGER.error("", e);
+		} catch (InvalidClassException ice) {
+			throw ice;
+		} catch (ClassNotFoundException | IOException e) {
+			LOGGER.error("Object deserialization exception ...", e);
 		}
 
 		return object;
