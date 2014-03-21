@@ -2,21 +2,21 @@ package serial.entity;
 
 import java.io.Serializable;
 
-public class ChildOfObject implements Serializable {
+public class SerializedChildOfObject implements Serializable {
 
 	private String string;
 	private Integer integer;
 	private transient long transientLong;
 
-	public ChildOfObject(final String string) {
+	public SerializedChildOfObject(final String string) {
 		this.string = string;
 	}
 
-	public ChildOfObject(final Integer integer) {
+	public SerializedChildOfObject(final Integer integer) {
 		this.integer = integer;
 	}
 
-	public ChildOfObject(final String string, final Integer integer) {
+	public SerializedChildOfObject(final String string, final Integer integer) {
 		this.string = string;
 		this.integer = integer;
 	}
