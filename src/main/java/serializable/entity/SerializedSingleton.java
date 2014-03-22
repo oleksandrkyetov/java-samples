@@ -48,10 +48,8 @@ public class SerializedSingleton implements Serializable {
 	 * @return
 	 * @throws ObjectStreamException
 	 */
-	/*
 	public Object readResolve() throws ObjectStreamException {
 		return getInstance();
 	}
-	*/
 
 }
