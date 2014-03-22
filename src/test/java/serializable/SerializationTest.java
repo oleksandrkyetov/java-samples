@@ -1,4 +1,4 @@
-package serial;
+package serializable;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import serial.entity.SerializedChildOfDefaultConstructorParent;
-import serial.entity.SerializedChildOfNoDefaultConstructorParent;
-import serial.entity.SerializedChildOfObject;
-import serial.service.ISerializationService;
+import serializable.entity.SerializedObject;
+import serializable.entity.SerializedChildOfDefaultConstructorParent;
+import serializable.entity.SerializedChildOfNoDefaultConstructorParent;
+import serializable.entity.SerializedSingleton;
+import serializable.service.ISerializationService;
 
 import java.io.InvalidClassException;
 
@@ -30,10 +31,6 @@ public class SerializationTest {
 
 	private final static long TEST_LONG = 9904L;
 
-	private SerializedChildOfNoDefaultConstructorParent serializedChildOfNoDefaultConstructorParent;
-	private SerializedChildOfDefaultConstructorParent serializedChildOfDefaultConstructorParent;
-	private SerializedChildOfObject serializedChildOfObject;
-
 	private ISerializationService serializationService;
 
 	@Autowired
@@ -43,14 +40,7 @@ public class SerializationTest {
 
 	@Before
 	public void before() {
-		serializedChildOfNoDefaultConstructorParent = new SerializedChildOfNoDefaultConstructorParent(TEST_PARENT_STRING, TEST_PARENT_INTEGER);
-		serializedChildOfNoDefaultConstructorParent.setChildString(TEST_CHILD_STRING);
 
-		serializedChildOfDefaultConstructorParent = new SerializedChildOfDefaultConstructorParent(TEST_PARENT_STRING, TEST_PARENT_INTEGER);
-		serializedChildOfDefaultConstructorParent.setChildString(TEST_CHILD_STRING);
-
-		serializedChildOfObject = new SerializedChildOfObject(TEST_STRING, TEST_INTEGER);
-		serializedChildOfObject.setTransientLong(TEST_LONG);
 	}
 
 	@After
@@ -63,7 +53,10 @@ public class SerializationTest {
 	 * @throws InvalidClassException
 	 */
 	@Test(expected = InvalidClassException.class)
-	public void testChildOfNoDefaultConstructorParent() throws InvalidClassException {
+	public void testSerializedChildOfNoDefaultConstructorParent() throws InvalidClassException {
+		final SerializedChildOfNoDefaultConstructorParent serializedChildOfNoDefaultConstructorParent = new SerializedChildOfNoDefaultConstructorParent(TEST_PARENT_STRING, TEST_PARENT_INTEGER);
+		serializedChildOfNoDefaultConstructorParent.setChildString(TEST_CHILD_STRING);;
+
 		final String string = serializationService.objectToString(serializedChildOfNoDefaultConstructorParent);
 		final SerializedChildOfNoDefaultConstructorParent object = serializationService.stringToObject(string, SerializedChildOfNoDefaultConstructorParent.class);
 	}
@@ -73,7 +66,10 @@ public class SerializationTest {
 	 * @throws InvalidClassException
 	 */
 	@Test
-	public void testChildOfDefaultConstructorParent() throws InvalidClassException {
+	public void testSerializedChildOfDefaultConstructorParent() throws InvalidClassException {
+		final SerializedChildOfDefaultConstructorParent serializedChildOfDefaultConstructorParent = new SerializedChildOfDefaultConstructorParent(TEST_PARENT_STRING, TEST_PARENT_INTEGER);
+		serializedChildOfDefaultConstructorParent.setChildString(TEST_CHILD_STRING);
+
 		final String string = serializationService.objectToString(serializedChildOfDefaultConstructorParent);
 		final SerializedChildOfDefaultConstructorParent object = serializationService.stringToObject(string, SerializedChildOfDefaultConstructorParent.class);
 
@@ -87,13 +83,32 @@ public class SerializationTest {
 	 * @throws InvalidClassException
 	 */
 	@Test
-	public void testSerializedChildOfObject() throws InvalidClassException {
-		final String string = serializationService.objectToString(serializedChildOfObject);
-		final SerializedChildOfObject object = serializationService.stringToObject(string, SerializedChildOfObject.class);
+	public void testSerializedObject() throws InvalidClassException {
+		final SerializedObject serializedObject = new SerializedObject(TEST_STRING, TEST_INTEGER);
+		serializedObject.setTransientLong(TEST_LONG);
 
-		Assert.assertEquals(serializedChildOfObject.getString(), object.getString());
-		Assert.assertEquals(serializedChildOfObject.getInteger(), object.getInteger());
+		final String string = serializationService.objectToString(serializedObject);
+		final SerializedObject object = serializationService.stringToObject(string, SerializedObject.class);
+
+		Assert.assertEquals(serializedObject.getString(), object.getString());
+		Assert.assertEquals(serializedObject.getInteger(), object.getInteger());
 		Assert.assertEquals(0L, object.getTransientLong());
+	}
+
+	@Test
+	public void testSerializedSingleton() throws InvalidClassException {
+		final SerializedSingleton serializedSingleton = SerializedSingleton.getInstance();
+		serializedSingleton.setInteger(TEST_INTEGER);
+		serializedSingleton.setString(TEST_STRING);
+		serializedSingleton.setTransientLong(TEST_LONG);
+
+		final String string = serializationService.objectToString(serializedSingleton);
+		final SerializedSingleton object = serializationService.stringToObject(string, SerializedSingleton.class);
+
+		Assert.assertEquals(serializedSingleton.getString(), object.getString());
+		Assert.assertEquals(serializedSingleton.getInteger(), object.getInteger());
+		Assert.assertEquals(serializedSingleton.getTransientLong(), object.getTransientLong());
+		Assert.assertEquals(serializedSingleton, object);
 	}
 
 }

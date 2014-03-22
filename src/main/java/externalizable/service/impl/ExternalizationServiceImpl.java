@@ -1,20 +1,21 @@
-package serial.service.impl;
+package externalizable.service.impl;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import externalizable.service.IExternalizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import serial.service.ISerializationService;
 
 import java.io.*;
 
+//TODO
 @Service
-public class SerializationServiceImpl implements ISerializationService {
+public class ExternalizationServiceImpl implements IExternalizationService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SerializationServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExternalizationServiceImpl.class);
 
 	@Override
-	public String objectToString(final Serializable object) {
+	public String objectToString(final Externalizable object) {
 		String string = null;
 
 		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -24,7 +25,7 @@ public class SerializationServiceImpl implements ISerializationService {
 
 			string = Base64.encode(byteArrayOutputStream.toByteArray());
 		} catch (IOException ioe) {
-			LOGGER.error("Object serialization exception ...", ioe);
+			LOGGER.error("Object externalizable exception ...", ioe);
 		}
 
 		return string;
@@ -32,7 +33,7 @@ public class SerializationServiceImpl implements ISerializationService {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T extends Serializable> T stringToObject(final String string, final Class<T> clazz) throws InvalidClassException {
+	public <T extends Externalizable> T stringToObject(final String string, final Class<T> clazz) throws InvalidClassException {
 		T object = null;
 
 		try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.decode(string));
@@ -42,7 +43,7 @@ public class SerializationServiceImpl implements ISerializationService {
 		} catch (InvalidClassException ice) {
 			throw ice;
 		} catch (ClassNotFoundException | IOException e) {
-			LOGGER.error("Object deserialization exception ...", e);
+			LOGGER.error("Object deexternalization exception ...", e);
 		}
 
 		return object;

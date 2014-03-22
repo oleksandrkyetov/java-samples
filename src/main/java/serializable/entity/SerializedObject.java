@@ -1,22 +1,22 @@
-package serial.entity;
+package serializable.entity;
 
 import java.io.Serializable;
 
-public class SerializedChildOfObject implements Serializable {
+public class SerializedObject implements Serializable {
 
 	private String string;
 	private Integer integer;
 	private transient long transientLong;
 
-	public SerializedChildOfObject(final String string) {
+	public SerializedObject(final String string) {
 		this.string = string;
 	}
 
-	public SerializedChildOfObject(final Integer integer) {
+	public SerializedObject(final Integer integer) {
 		this.integer = integer;
 	}
 
-	public SerializedChildOfObject(final String string, final Integer integer) {
+	public SerializedObject(final String string, final Integer integer) {
 		this.string = string;
 		this.integer = integer;
 	}

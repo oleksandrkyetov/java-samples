@@ -1,4 +1,4 @@
-package serial.service;
+package serializable.service;
 
 import java.io.InvalidClassException;
 import java.io.Serializable;

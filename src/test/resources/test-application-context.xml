@@ -7,7 +7,7 @@
 
 	<import resource="application-context.xml" />
 
-	<context:component-scan base-package="serial" />
-	<context:component-scan base-package="external" />
+	<context:component-scan base-package="serializable" />
+	<context:component-scan base-package="externalizable" />
 
 </beans>

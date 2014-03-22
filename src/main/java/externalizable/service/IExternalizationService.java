@@ -1,4 +1,4 @@
-package external.service;
+package externalizable.service;
 
 import java.io.Externalizable;
 import java.io.InvalidClassException;
