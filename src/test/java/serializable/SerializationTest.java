@@ -39,14 +39,10 @@ public class SerializationTest {
 	}
 
 	@Before
-	public void before() {
-
-	}
+	public void before() { }
 
 	@After
-	public void after() {
-
-	}
+	public void after() { }
 
 	/**
 	 * Can not deserialize object without default constructor in parent

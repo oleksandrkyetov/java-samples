@@ -32,14 +32,10 @@ public class ExternalizationTest {
 	}
 
 	@Before
-	public void before() {
-
-	}
+	public void before() { }
 
 	@After
-	public void after() {
-
-	}
+	public void after() { }
 
 	/**
 	 * Can not deexternalize object without default constructor
