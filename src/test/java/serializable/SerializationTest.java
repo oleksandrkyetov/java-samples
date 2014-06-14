@@ -51,7 +51,7 @@ public class SerializationTest {
 	@Test(expected = InvalidClassException.class)
 	public void testSerializedChildOfNoDefaultConstructorParent() throws InvalidClassException {
 		final SerializedChildOfNoDefaultConstructorParent serializedChildOfNoDefaultConstructorParent = new SerializedChildOfNoDefaultConstructorParent(TEST_PARENT_STRING, TEST_PARENT_INTEGER);
-		serializedChildOfNoDefaultConstructorParent.setChildString(TEST_CHILD_STRING);;
+		serializedChildOfNoDefaultConstructorParent.setChildString(TEST_CHILD_STRING);
 
 		final String string = serializationService.objectToString(serializedChildOfNoDefaultConstructorParent);
 		final SerializedChildOfNoDefaultConstructorParent object = serializationService.stringToObject(string, SerializedChildOfNoDefaultConstructorParent.class);
