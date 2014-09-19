@@ -18,7 +18,7 @@ public class ListsTest {
 
 	final private static Integer TWO = 2;
 
-	final private static List<Integer> integers = new ImmutableList.Builder<Integer>().add(TWO, TWO, TWO, TWO, TWO).build();
+	final private static List<Integer> INTEGERS = new ImmutableList.Builder<Integer>().add(TWO, TWO, TWO, TWO, TWO).build();
 
 	@Before
 	public void before() { }
@@ -28,7 +28,7 @@ public class ListsTest {
 
 	@Test(expected = ConcurrentModificationException.class)
 	public void testRemoveAllElementsFromListForEach() {
-		final List<Integer> items = new ArrayList<>(integers);
+		final List<Integer> items = new ArrayList<>(INTEGERS);
 
 		for (Integer item : items) {
 			items.remove(item);
@@ -36,8 +36,17 @@ public class ListsTest {
 	}
 
 	@Test
+	public void testRemoveAllByRemoveAll() {
+		final List<Integer> items = new ArrayList<>(INTEGERS);
+
+		items.removeAll(items);
+
+		Assert.assertTrue(items.isEmpty());
+	}
+
+	@Test
 	public void testRemoveAllElementsFromListWhile() {
-		final List<Integer> items = new ArrayList<>(integers);
+		final List<Integer> items = new ArrayList<>(INTEGERS);
 
 		while (!items.isEmpty()) {
 			items.remove(0);
@@ -48,7 +57,7 @@ public class ListsTest {
 
 	@Test
 	public void testRemoveAllElementsFromListIterator() {
-		final List<Integer> items = new ArrayList<>(integers);
+		final List<Integer> items = new ArrayList<>(INTEGERS);
 
 		final Iterator<Integer> iterator = items.iterator();
 		while (iterator.hasNext()) {
