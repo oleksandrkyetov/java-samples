@@ -17,4 +17,9 @@ public class DefaultExceptionResult implements ExceptionResult {
 		return results;
 	}
 
+	@Override
+	public String getLastResult() {
+		return getResults().get(getResults().size() - 1);
+	}
+
 }

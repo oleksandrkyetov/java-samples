@@ -45,6 +45,15 @@ public class ListsTest {
 	}
 
 	@Test
+	public void testRemoveAllByClear() {
+		final List<Integer> items = new ArrayList<>(INTEGERS);
+
+		items.clear();
+
+		Assert.assertTrue(items.isEmpty());
+	}
+
+	@Test
 	public void testRemoveAllElementsFromListWhile() {
 		final List<Integer> items = new ArrayList<>(INTEGERS);
 

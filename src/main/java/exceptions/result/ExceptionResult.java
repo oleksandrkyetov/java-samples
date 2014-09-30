@@ -8,4 +8,6 @@ public interface ExceptionResult {
 
 	public List<String> getResults();
 
+	public String getLastResult();
+
 }
