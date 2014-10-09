@@ -9,6 +9,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 @RunWith(JUnit4.class)
 public class CoreTest {
 
@@ -35,6 +39,22 @@ public class CoreTest {
 		new NewInstanceValuableObjectChangerImpl().change(valuableObject, NEW_STRING);
 
 		Assert.assertEquals(valuableObject.getValue(), STRING);
+	}
+
+	@Test
+	public void testOutOfMemoryException() {
+		int i = 0;
+		try {
+			final List<String> strings = new LinkedList<>();
+			strings.add("0");
+
+			for(;;) {
+				strings.add(strings.get(strings.size() - 1) + "1");
+				i++;
+			}
+		} finally {
+			System.out.print("YAY!!! :)" + i);
+		}
 	}
 
 }
